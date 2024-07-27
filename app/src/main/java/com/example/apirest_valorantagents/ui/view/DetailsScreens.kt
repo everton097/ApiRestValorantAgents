@@ -49,11 +49,11 @@ fun DetailsScreen(
     navController: NavController,
 ) {
     val state by detailsViewModel.uiDetailsState.collectAsState()
-    Log.d("AgentsViewModel", "Render estado atual: $state")
+    Log.d("AgentsViewModel", "Estado atual antes do WHEN: $state")
 
     when (state) {
+        is AgentDetailsUiState.Loading2 -> LoadingDetailsScreen() //AgentDetails(agent = getSampleAgent())
         is AgentDetailsUiState.Success2 -> AgentDetails((state as AgentDetailsUiState.Success2).agent)
-        is AgentDetailsUiState.Loading2 -> LoadingDetailsScreen()
         is AgentDetailsUiState.Error2 -> ErrorDetailsScreen()
     }
 }
@@ -93,7 +93,6 @@ fun AgentDetails(agent: DetailsAgent) {
             .fillMaxSize()
             .background(Color.LightGray),
     ) {
-        Log.d("AgentsViewModel", "Carregado tela de detalhes de agente")
         item {
             Column(modifier = Modifier.padding(16.dp)) {
                 AsyncImage(
