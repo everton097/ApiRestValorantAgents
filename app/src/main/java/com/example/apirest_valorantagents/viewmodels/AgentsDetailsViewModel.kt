@@ -20,39 +20,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class AgentsViewModel : ViewModel() {
+class AgentsDetailsViewModel : ViewModel() {
 
-    private var _uiState: MutableStateFlow<AgentsUiState> = MutableStateFlow(AgentsUiState.Loading)
-    val uiState: StateFlow<AgentsUiState> = _uiState.asStateFlow()
 
-    private val _uiStateDetails: MutableStateFlow<AgentDetailsUiState> = MutableStateFlow(AgentDetailsUiState.Loading)
+    private val _uiStateDetails: MutableStateFlow<AgentDetailsUiState> = MutableStateFlow(AgentDetailsUiState.Loading2)
     val uiDetailsState: StateFlow<AgentDetailsUiState> = _uiStateDetails.asStateFlow()
-
-    init {
-        getAgents()
-    }
-
-    private fun getAgents() {
-        viewModelScope.launch {
-            try {
-                val apiResponse = OpenValorantApi.retrofitService.getAgents()
-                val playableAgents = apiResponse.data.filter { it.isPlayableCharacter }
-                _uiState.value = AgentsUiState.Success(playableAgents)
-                Log.d("AgentsViewModel", "Success1: ${playableAgents}")
-            } catch (e: IOException) {
-                _uiState.value = AgentsUiState.Error
-                Log.e("AgentsViewModel", "Failure IOException: ${e.message}")
-            } catch (e: HttpException) {
-                _uiState.value = AgentsUiState.Error
-                val apiResponse = e.response.toString()
-                Log.e("AgentsViewModel", "Failure HttpException: ${e.message}")
-                Log.e("AgentsViewModel", "API response: $apiResponse")
-            } catch (e: Exception) {
-                _uiState.value = AgentsUiState.Error
-                Log.e("AgentsViewModel", "An unexpected error occurred: ${e.message}")
-            }
-        }
-    }
 
     fun getDetailsAgents(agentId: String, navController: NavController) {
         viewModelScope.launch {
@@ -60,14 +32,12 @@ class AgentsViewModel : ViewModel() {
                 Log.d("AgentsViewModel", "Iniciando a chamada da API")
                 val response = OpenValorantApiDetails.retrofitService.getDetailsAgents(agentId)
                 val playableAgent = response.data
-                _uiStateDetails.value = AgentDetailsUiState.Success(playableAgent)
+                _uiStateDetails.value = AgentDetailsUiState.Error2
                 Log.d("AgentsViewModel", "Agente recuperado com sucesso: $playableAgent")
-                navController.navigate(AppScreens.details.name)
             } catch (e: Exception) {
-                _uiStateDetails.value = AgentDetailsUiState.Error
+                _uiStateDetails.value = AgentDetailsUiState.Error2
                 Log.e("AgentsViewModel", "Erro ao obter detalhes do agente: ${e.message}")
             }
         }
     }
-
 }

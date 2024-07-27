@@ -25,9 +25,6 @@ class AgentsViewModel : ViewModel() {
     private var _uiState: MutableStateFlow<AgentsUiState> = MutableStateFlow(AgentsUiState.Loading)
     val uiState: StateFlow<AgentsUiState> = _uiState.asStateFlow()
 
-    private val _uiStateDetails: MutableStateFlow<AgentDetailsUiState> = MutableStateFlow(AgentDetailsUiState.Loading)
-    val uiDetailsState: StateFlow<AgentDetailsUiState> = _uiStateDetails.asStateFlow()
-
     init {
         getAgents()
     }
@@ -50,23 +47,6 @@ class AgentsViewModel : ViewModel() {
             } catch (e: Exception) {
                 _uiState.value = AgentsUiState.Error
                 Log.e("AgentsViewModel", "An unexpected error occurred: ${e.message}")
-            }
-        }
-    }
-
-    fun getDetailsAgents(agentId: String, navController: NavController) {
-        viewModelScope.launch {
-            try {
-                Log.d("AgentsViewModel", "Iniciando a chamada da API")
-                _uiStateDetails.value = AgentDetailsUiState.Loading  // Estado inicial
-                val response = OpenValorantApiDetails.retrofitService.getDetailsAgents(agentId)
-                val playableAgent = response.data
-                _uiStateDetails.value = AgentDetailsUiState.Success(playableAgent)
-                Log.d("AgentsViewModel", "Agente recuperado com sucesso: $playableAgent")
-                navController.navigate(AppScreens.details.name)
-            } catch (e: Exception) {
-                _uiStateDetails.value = AgentDetailsUiState.Error
-                Log.e("AgentsViewModel", "Erro ao obter detalhes do agente: ${e.message}")
             }
         }
     }

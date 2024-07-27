@@ -17,6 +17,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.apirest_valorantagents.R
+import com.example.apirest_valorantagents.viewmodels.AgentsDetailsViewModel
 import com.example.apirest_valorantagents.viewmodels.AgentsViewModel
 import com.example.apirest_valorantagents.viewmodels.AppViewModel
 
@@ -27,6 +29,7 @@ fun App(
 ) {
     val appViewModel: AppViewModel = viewModel()
     val agentsViewModel: AgentsViewModel = viewModel()
+    val detailsViewModel: AgentsDetailsViewModel = viewModel()
     val navController = rememberNavController()
 
     val uiState by appViewModel.appUiState.collectAsState()
@@ -38,6 +41,20 @@ fun App(
                 (if (uiState.agentName != null) uiState.agentName else stringResource(id = uiState.title))?.let { Text(text = it) }
             })
         },
+        floatingActionButton = {
+            if(uiState.botoa){
+                FloatingActionButton(onClick = {
+                    appViewModel.navigateToHome(navController)
+                }) {
+                    Image(
+                        painter = painterResource(R.drawable.baseline_keyboard_return_24),
+                        contentDescription = stringResource(
+                            id = R.string.description_button
+                        )
+                    )
+                }
+            }
+        }
     ) {
         NavHost(
             navController = navController,
@@ -49,7 +66,6 @@ fun App(
             }
             composable(route = AppScreens.details.name) {
                 DetailsScreen(
-                    agentsViewModel = agentsViewModel,
                     navController = navController,
                 )
             }

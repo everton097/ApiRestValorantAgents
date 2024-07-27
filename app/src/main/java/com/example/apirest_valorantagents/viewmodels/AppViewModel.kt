@@ -21,15 +21,20 @@ class AppViewModel : ViewModel() {
         _appUiState.update { currentState ->
             currentState.copy(
                 title = R.string.details_title,
-                agentName = agentName
+                agentName = agentName,
+                botoa = true
             )
         }
         navController.navigate(AppScreens.details.name)
     }
 
     fun navigateToHome(navController: NavController) {
-        _appUiState.update {
-            AppUiState()
+        _appUiState.update { currentState ->
+            currentState.copy(
+                title = R.string.home_title,
+                agentName = null,
+                botoa = false
+            )
         }
         navController.navigate(AppScreens.home.name) {
             popUpTo(AppScreens.home.name) {

@@ -3,4 +3,5 @@
     <string name="home_title">Valorant Agents List</string>
     <string name="details_title">Agent Details</string>
     <string name="loading_failed">Failed to load</string>
+    <string name="description_button">Return</string>
 </resources>

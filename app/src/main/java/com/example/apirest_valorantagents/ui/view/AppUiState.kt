@@ -6,5 +6,6 @@ import com.example.apirest_valorantagents.R
 
 data class AppUiState(
     @StringRes val title: Int = R.string.home_title,
-    val agentName: String? = null
+    val agentName: String? = null,
+    val botoa : Boolean = false
 )
