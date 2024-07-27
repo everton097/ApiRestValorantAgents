@@ -48,23 +48,22 @@ fun DetailsScreen(
     detailsViewModel: AgentsDetailsViewModel = viewModel(),
     navController: NavController,
 ) {
-
     val state by detailsViewModel.uiDetailsState.collectAsState()
-    Log.d("AgentsViewModel", "verificação de estado de _uiStateDetails ")
+    Log.d("AgentsViewModel", "Render estado atual: $state")
+
     when (state) {
-        is AgentDetailsUiState.Loading2 -> AgentDetails(agent = getSampleAgent())
         is AgentDetailsUiState.Success2 -> AgentDetails((state as AgentDetailsUiState.Success2).agent)
+        is AgentDetailsUiState.Loading2 -> LoadingDetailsScreen()
         is AgentDetailsUiState.Error2 -> ErrorDetailsScreen()
     }
 }
+
 @Composable
 fun LoadingDetailsScreen(modifier: Modifier = Modifier.fillMaxSize()) {
     Image(
-        painter = painterResource(
-            id = R.drawable.loading_img
-        ),
-        contentDescription = "",
-        modifier = modifier.size(200.dp),
+        painter = painterResource(id = R.drawable.loading_img),
+        contentDescription = null,
+        modifier = modifier.size(200.dp)
     )
     Log.d("AgentsViewModel", "Estado em loading")
 }
@@ -74,11 +73,11 @@ fun ErrorDetailsScreen(modifier: Modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_connection_error),
-            contentDescription = ""
+            contentDescription = null
         )
         Text(
             text = stringResource(id = R.string.loading_failed),
@@ -94,6 +93,7 @@ fun AgentDetails(agent: DetailsAgent) {
             .fillMaxSize()
             .background(Color.LightGray),
     ) {
+        Log.d("AgentsViewModel", "Carregado tela de detalhes de agente")
         item {
             Column(modifier = Modifier.padding(16.dp)) {
                 AsyncImage(
@@ -162,7 +162,6 @@ fun AbilityItem(ability: Ability) {
         }
     }
 }
-
 
 fun getSampleAgent(): DetailsAgent {
     return DetailsAgent(

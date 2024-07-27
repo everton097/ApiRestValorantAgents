@@ -61,6 +61,7 @@ fun AgentsScreen(
     appViewModel: AppViewModel = viewModel()
 ) {
     val uiState by agentsViewModel.uiState.collectAsState()
+    // Log the current state
     when (uiState) {
         is AgentsUiState.Loading -> LoadingScreen()
         is AgentsUiState.Success -> AgentsList(
