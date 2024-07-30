@@ -3,10 +3,10 @@ package com.example.apirest_valorantagents.ui.view
 import com.example.restapi_dotahero.data.DetailsAgent
 
 interface AgentDetailsUiState {
-    object Loading2 : AgentDetailsUiState
+    object Loading : AgentDetailsUiState
 
-    data class Success2(val agent: DetailsAgent) : AgentDetailsUiState
+    data class Success(val agent: DetailsAgent) : AgentDetailsUiState
 
-    object Error2 : AgentDetailsUiState
+    object Error : AgentDetailsUiState
 
 }

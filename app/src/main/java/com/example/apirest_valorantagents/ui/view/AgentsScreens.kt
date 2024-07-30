@@ -50,29 +50,30 @@ import com.example.apirest_valorantagents.viewmodels.AgentsDetailsViewModel
 import com.example.apirest_valorantagents.viewmodels.AgentsViewModel
 import com.example.apirest_valorantagents.viewmodels.AppViewModel
 import com.example.restapi_dotahero.data.Agent
+import com.example.restapi_dotahero.data.DetailsAgent
 import com.example.restapi_dotahero.network.BASE_URL
 
 
 @Composable
 fun AgentsScreen(
-    agentsViewModel: AgentsViewModel = viewModel(),
-    detailsViewModel: AgentsDetailsViewModel = viewModel(),
+    agentsViewModel: AgentsViewModel,
+    detailsViewModel: AgentsDetailsViewModel,
     navController: NavController,
-    appViewModel: AppViewModel = viewModel()
+    appViewModel: AppViewModel
 ) {
     val uiState by agentsViewModel.uiState.collectAsState()
-    // Log the current state
     when (uiState) {
         is AgentsUiState.Loading -> LoadingScreen()
         is AgentsUiState.Success -> AgentsList(
             agents = (uiState as AgentsUiState.Success).agents,
             onDetailsAgents = { agentId ->
-                detailsViewModel.getDetailsAgents(agentId,navController)
+                detailsViewModel.getDetailsAgents(
+                    agentId = agentId,
+                    navController = navController,
+                    appViewModel = appViewModel,
+                )
             },
-            navController = navController,
-            appViewModel = appViewModel,
         )
-
         is AgentsUiState.Error -> ErrorScreen()
     }
 }
@@ -110,8 +111,6 @@ fun ErrorScreen(modifier: Modifier = Modifier.fillMaxSize()) {
 fun AgentsList(
     agents: List<Agent>,
     onDetailsAgents: (String) -> Unit,
-    navController: NavController,
-    appViewModel: AppViewModel,
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -120,7 +119,7 @@ fun AgentsList(
         columns = GridCells.Fixed(2)
     ) {
         items(agents) { agent ->
-            AgentEntry(agent = agent, onDetailsAgents = onDetailsAgents, navController = navController, appViewModel = appViewModel)
+            AgentEntry(agent = agent, onDetailsAgents = onDetailsAgents)
         }
     }
 }
@@ -129,8 +128,6 @@ fun AgentsList(
 fun AgentEntry(
     agent: Agent,
     onDetailsAgents: (String) -> Unit,
-    navController: NavController,
-    appViewModel: AppViewModel,
 ) {
     val density = LocalDensity.current.density
     val width = remember { mutableStateOf(0F) }
@@ -157,9 +154,7 @@ fun AgentEntry(
                         height.value = it.size.height / density
                     }
                     .clickable {
-                        Log.d("AgentsViewModel", "Agente clicado, ID: ${agent.id} Name: ${agent.name}")
                         onDetailsAgents(agent.id)
-                        appViewModel.navigateToDetails(navController,agent.name)
                     }
             )
             Box(

@@ -16,7 +16,6 @@ class AppViewModel : ViewModel() {
     val appUiState: StateFlow<AppUiState> =
         _appUiState.asStateFlow()
 
-
     fun navigateToDetails(navController: NavController, agentName: String) {
         _appUiState.update { currentState ->
             currentState.copy(
@@ -42,5 +41,4 @@ class AppViewModel : ViewModel() {
             }
         }
     }
-
 }

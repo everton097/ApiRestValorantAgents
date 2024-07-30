@@ -35,20 +35,18 @@ class AgentsViewModel : ViewModel() {
                 val apiResponse = OpenValorantApi.retrofitService.getAgents()
                 val playableAgents = apiResponse.data.filter { it.isPlayableCharacter }
                 _uiState.value = AgentsUiState.Success(playableAgents)
-                Log.d("AgentsViewModel", "Success1: ${playableAgents}")
             } catch (e: IOException) {
                 _uiState.value = AgentsUiState.Error
                 Log.e("AgentsViewModel", "Failure IOException: ${e.message}")
             } catch (e: HttpException) {
                 _uiState.value = AgentsUiState.Error
                 val apiResponse = e.response.toString()
-                Log.e("AgentsViewModel", "Failure HttpException: ${e.message}")
                 Log.e("AgentsViewModel", "API response: $apiResponse")
+                Log.e("AgentsViewModel", "Failure HttpException: ${e.message}")
             } catch (e: Exception) {
                 _uiState.value = AgentsUiState.Error
                 Log.e("AgentsViewModel", "An unexpected error occurred: ${e.message}")
             }
         }
     }
-
 }

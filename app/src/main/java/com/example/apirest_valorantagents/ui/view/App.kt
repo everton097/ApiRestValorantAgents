@@ -31,13 +31,11 @@ fun App(
     val agentsViewModel: AgentsViewModel = viewModel()
     val detailsViewModel: AgentsDetailsViewModel = viewModel()
     val navController = rememberNavController()
-
     val uiState by appViewModel.appUiState.collectAsState()
 
     Scaffold(
         topBar = {
             TopAppBar(title = {
-                //Text(text = if (uiState.agentName != null) uiState.agentName else stringResource(id = uiState.title))
                 (if (uiState.agentName != null) uiState.agentName else stringResource(id = uiState.title))?.let { Text(text = it) }
             })
         },
@@ -62,12 +60,10 @@ fun App(
             modifier = modifier.padding(it)
         ) {
             composable(route = AppScreens.home.name) {
-                AgentsScreen(navController = navController, appViewModel = appViewModel)
+                AgentsScreen(navController = navController, agentsViewModel = agentsViewModel, detailsViewModel = detailsViewModel, appViewModel =appViewModel)
             }
             composable(route = AppScreens.details.name) {
-                DetailsScreen(
-                    navController = navController,
-                )
+                DetailsScreen(detailsViewModel = detailsViewModel)
             }
         }
     }

@@ -45,16 +45,13 @@ import com.example.restapi_dotahero.data.DetailsAgent
 
 @Composable
 fun DetailsScreen(
-    detailsViewModel: AgentsDetailsViewModel = viewModel(),
-    navController: NavController,
+    detailsViewModel: AgentsDetailsViewModel,
 ) {
     val state by detailsViewModel.uiDetailsState.collectAsState()
-    Log.d("AgentsViewModel", "Estado atual antes do WHEN: $state")
-
     when (state) {
-        is AgentDetailsUiState.Loading2 -> LoadingDetailsScreen() //AgentDetails(agent = getSampleAgent())
-        is AgentDetailsUiState.Success2 -> AgentDetails((state as AgentDetailsUiState.Success2).agent)
-        is AgentDetailsUiState.Error2 -> ErrorDetailsScreen()
+        is AgentDetailsUiState.Loading -> LoadingDetailsScreen()
+        is AgentDetailsUiState.Success -> AgentDetails((state as AgentDetailsUiState.Success).agent)
+        is AgentDetailsUiState.Error -> ErrorDetailsScreen()
     }
 }
 
@@ -65,7 +62,6 @@ fun LoadingDetailsScreen(modifier: Modifier = Modifier.fillMaxSize()) {
         contentDescription = null,
         modifier = modifier.size(200.dp)
     )
-    Log.d("AgentsViewModel", "Estado em loading")
 }
 
 @Composable
@@ -160,35 +156,4 @@ fun AbilityItem(ability: Ability) {
             )
         }
     }
-}
-
-fun getSampleAgent(): DetailsAgent {
-    return DetailsAgent(
-        id = "320b2a48-4d9b-a075-30f1-1f93a9b638fa",
-        name = "Sova",
-        img = "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/displayicon.png",
-        description = "Born from the eternal winter of Russia's tundra, Sova tracks, finds, and eliminates enemies with ruthless efficiency and precision. His custom bow and incredible scouting abilities ensure that even if you run, you cannot hide.",
-        bustPortrait = "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/fullportrait.png",
-        isPlayableCharacter = true,
-        abilities = listOf(
-            Ability(
-                slot = "Ability1",
-                name = "Shock Bolt",
-                description = "EQUIP a bow with a shock bolt. FIRE to send the explosive bolt forward, detonating upon collision and damaging players nearby. HOLD FIRE to extend the range of the projectile. ALT FIRE to add up to two bounces to this arrow.",
-                icon = "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/abilities/ability1/displayicon.png"
-            ),
-            Ability(
-                slot = "Ability2",
-                name = "Recon Bolt",
-                description = "EQUIP a bow with recon bolt. FIRE to send the recon bolt forward, activating upon collision and Revealing the location of nearby enemies caught in the line of sight of the bolt. Enemies can destroy this bolt. HOLD FIRE to extend the range of the projectile. ALT FIRE to add up to two bounces to this arrow.",
-                icon = "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/abilities/ability2/displayicon.png"
-            )
-        )
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewAgentDetails() {
-    AgentDetails(agent = getSampleAgent())
 }
