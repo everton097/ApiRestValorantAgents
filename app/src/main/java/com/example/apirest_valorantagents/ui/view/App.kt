@@ -36,7 +36,7 @@ fun App(
     Scaffold(
         topBar = {
             TopAppBar(title = {
-                (if (uiState.agentName != null) uiState.agentName else stringResource(id = uiState.title))?.let { Text(text = it) }
+                Text(text = (if (uiState.agentName != null) "${stringResource(id = uiState.title)}: ${uiState.agentName}" else stringResource(id = uiState.title)))
             })
         },
         floatingActionButton = {
