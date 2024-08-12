@@ -1,5 +1,7 @@
 package com.example.apirest_valorantagents.ui.view
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +35,11 @@ fun App(
     val navController = rememberNavController()
     val uiState by appViewModel.appUiState.collectAsState()
 
+    BackHandler() {
+        Log.d("AgentsViewModel", "BackHandler AppScreen")
+        appViewModel.navigateBack(navController)
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -63,7 +70,7 @@ fun App(
                 AgentsScreen(navController = navController, agentsViewModel = agentsViewModel, detailsViewModel = detailsViewModel, appViewModel =appViewModel)
             }
             composable(route = AppScreens.details.name) {
-                DetailsScreen(detailsViewModel = detailsViewModel)
+                DetailsScreen(navController = navController, appViewModel = appViewModel,detailsViewModel = detailsViewModel)
             }
         }
     }

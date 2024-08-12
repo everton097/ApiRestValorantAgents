@@ -1,6 +1,7 @@
 package com.example.apirest_valorantagents.ui.view
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +40,7 @@ import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.apirest_valorantagents.R
 import com.example.apirest_valorantagents.viewmodels.AgentsDetailsViewModel
+import com.example.apirest_valorantagents.viewmodels.AppViewModel
 import com.example.restapi_dotahero.data.Ability
 import com.example.restapi_dotahero.data.DetailsAgent
 
@@ -46,7 +48,13 @@ import com.example.restapi_dotahero.data.DetailsAgent
 @Composable
 fun DetailsScreen(
     detailsViewModel: AgentsDetailsViewModel,
+    navController: NavController,
+    appViewModel: AppViewModel
 ) {
+    BackHandler() {
+        Log.d("AgentsViewModel", "BackHandler DetailsScreen")
+        appViewModel.navigateBack(navController)
+    }
     val state by detailsViewModel.uiDetailsState.collectAsState()
     when (state) {
         is AgentDetailsUiState.Loading -> LoadingDetailsScreen()

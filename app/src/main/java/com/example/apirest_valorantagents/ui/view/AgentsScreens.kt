@@ -1,6 +1,7 @@
 package com.example.apirest_valorantagents.ui.view
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -61,6 +62,12 @@ fun AgentsScreen(
     navController: NavController,
     appViewModel: AppViewModel
 ) {
+
+    BackHandler() {
+        Log.d("AgentsViewModel", "BackHandler AgentsScreen")
+        appViewModel.navigateBack(navController)
+    }
+
     val uiState by agentsViewModel.uiState.collectAsState()
     when (uiState) {
         is AgentsUiState.Loading -> LoadingScreen()

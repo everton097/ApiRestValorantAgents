@@ -1,5 +1,6 @@
 package com.example.apirest_valorantagents.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.apirest_valorantagents.R
@@ -40,5 +41,17 @@ class AppViewModel : ViewModel() {
                 inclusive = true
             }
         }
+    }
+
+    fun navigateBack(navController: NavController){
+        Log.d("AgentsViewModel", "entrada na função")
+        _appUiState.update { currentState ->
+            currentState.copy(
+                title = R.string.home_title,
+                agentName = null,
+                botoa = false
+            )
+        }
+        navController.popBackStack()
     }
 }
